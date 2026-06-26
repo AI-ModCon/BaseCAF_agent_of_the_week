@@ -15,6 +15,7 @@ The CAF **Agent of the Week**  (AotW) is an exemplary agentic application or ind
 6. [**AISAC-AI Scientific Assistant Core**](AotW-06-AISAC.md)
 7. [**SciLink &mdash; Agentic Automation of the Experimental Discovery Loop**](AotW-07-SciLink.md)
 8. [**PISCES  &mdash; Multi-Model Consensus Extraction of Biochemical Process Flowsheets**](AotW-08-PISCES.md)
+9. [**Open AI Co-Scientist   &mdash; Open Hypothesis Evolution for Scientific Discovery**](AotW-09-OpenAICoScientist.md)
 
 ## How to become an Agent of the Week
 
