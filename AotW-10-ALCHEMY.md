@@ -8,6 +8,11 @@
 
 ## Science Story
 
+<p align="center">
+  <img src="images/10-ALCHEMY/ALCHEMY1.png" width="80%" alt="Alchemy top-level architecture flowchart">
+  <br><em>Figure: Top-level flowchart of the Alchemy agent workflow, from natural language / P&ID input through IFC generation and structural analysis.</em>
+</p>
+
 The global expansion of nuclear power is driving demand for faster preliminary design of reactor systems — primary coolant circuits, secondary heat exchange loops, cooling/ventilation networks, and the buildings that house them. Today this is a labor-intensive, multi-stage process: engineers define system topology in 2D piping and instrumentation diagrams (P&IDs), manually recreate that topology in 3D BIM tools, then manually translate those models into finite element models (FEMs) for structural and seismic analysis. Each handoff between tools introduces interpretation errors, geometric inconsistencies, and loss of engineering intent, and any design change means repeating the whole chain. **Alchemy**, developed at Idaho National Laboratory, closes this gap by taking natural-language system descriptions or structured P&ID exports and autonomously producing analysis-ready 3D facility models — turning a process that once took hours of manual modeling into one that takes minutes.
 
 ---
