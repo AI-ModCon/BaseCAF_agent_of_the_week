@@ -2,7 +2,7 @@
   <img src="images/CAF-AotW-banner.svg" width="100%" alt="CAF AotW banner">
 </p>
 
-# [Date] &mdash; AotW#[Number]: Alchemy — Agentic 3D Preliminary Design and Structural Analysis for Nuclear Facilities
+# 07/08/2026 &mdash; AotW#10: Alchemy — Agentic 3D Preliminary Design and Structural Analysis for Nuclear Facilities
 
 ---
 
