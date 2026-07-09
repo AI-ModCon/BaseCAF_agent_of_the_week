@@ -2,7 +2,7 @@
   <img src="images/CAF-AotW-banner.svg" width="100%" alt="CAF AotW banner">
 </p>
 
-# 07/08/2026 &mdash; AotW#10: Alchemy — Agentic 3D Preliminary Design and Structural Analysis for Nuclear Facilities
+# 07/08/2026 &mdash; AotW#10: Alchemy — Agentic Autonomous 3D Preliminary Design and Structural Analysis for Nuclear Facilities
 
 ---
 
@@ -32,8 +32,8 @@ Alchemy is a two-layer system: an **AI agent layer** handling natural language u
 **Agent orchestration:** Built on **LangGraph**, the agent is implemented as a subclass of the `PrometheusAgent` base class and deployed on Idaho National Laboratory's **Prometheus** multi-agent platform via the **A2A protocol**. At startup, it registers its agent card and advertises its `generate_optimized_ifc` skill to a platform registry; incoming task requests are routed to it by the Prometheus orchestrator or any A2A-compliant client, with progress streamed back via an `on_progress` callback. LLM calls are routed through **LiteLLM** for provider-agnostic access.
 
 <p align="center">
-  <img src="images/10-ALCHEMY/ALCHEMY1.png" width="80%" alt="Alchemy top-level workflow">
-  <br><em>Figure: Alchemy top-level workflow.</em>
+  <img src="images/10-ALCHEMY/ALCHEMY1.png" width="70%" alt="Alchemy top-level workflow">
+  <br><em>Figure 1: Alchemy top-level workflow.</em>
 </p>
 
 **Core workflow (7-node LangGraph `StateGraph`):** `parse` → `transform` (two-step intent extraction + schema mapping, with the topological validation/self-correction loop running inside this node) → `validate` → `generate` (layout optimization, IFC generation, pipe routing) → optionally `convert_apdl` → `run_analysis` → `finalize` (structural analysis using Ansys APDL, and final artifact registration). A shared conditional routing function evaluates state after each node and can short-circuit to `END` on unrecoverable errors or when clarification is needed.
@@ -49,23 +49,27 @@ Alchemy is a two-layer system: an **AI agent layer** handling natural language u
 **About the Prometheus platform:** Prometheus is INL's multi-agent analysis platform where users interact through a Chainlit-based chat UI, and a central client-agent orchestrator routes each query to the appropriate specialist agent. Beyond orchestration, the platform provides shared infrastructure that Alchemy relies on directly: 3D visualization support for common engineering formats (Exodus, STL, IFC), multi-step/multi-turn analysis workflows with persistent conversation state, and a DeepLynx-backed artifact catalog shared across all agents. This shared catalog allows Alchemy's IFC and FEM outputs to be discovered and reused by other specialist agents in the platform without custom point-to-point integration.
 
 <p align="center">
-  <img src="images/10-ALCHEMY/ALCHEMY2.png" width="80%" alt="Prometheus platform architecture">
-  <br><em>Figure: Prometheus platform architecture.</em>
+  <img src="images/10-ALCHEMY/ALCHEMY2.png" width="70%" alt="Prometheus platform architecture">
+  <br><em>Figure 2: Prometheus platform architecture.</em>
 </p>
 
 Each specialist agent, including Alchemy, is built on **PrometheusAgent**, the platform's Python base class for A2A-enabled agents. Rather than implementing the A2A protocol from scratch, an agent developer subclasses `PrometheusAgent` and implements a single method, `_execute()`, which receives the incoming task parameters and returns a result dict; the base class transparently handles agent card publication, registry self-registration, authentication, and the full A2A task lifecycle (emitting the initial "working" status, streaming progress updates, and closing out with a final "completed" or "failed" status). The base class also supplies higher-level helpers Alchemy uses in practice: structured JSON/file artifact emission (for registering IFC and FEM outputs), `INPUT_REQUIRED` forms for interactively requesting missing system information from the engineer, and per-conversation state persistence keyed on a stable `context_id` so a design session can span multiple turns. This shared foundation lets the Alchemy team focus development effort on nuclear-domain logic rather than on rebuilding agent plumbing already solved at the platform level.
 
-**Demonstrated results:** Across two test cases (a multi-system pressurized water reactor (PWR) with a cooling/ventilation system (CVS) configuration, and an imported 2D P&ID export), Alchemy produced validated, zero-error IFC models and full structural analysis in roughly 90 seconds to 4 minutes, work that previously took hours manually.
+**Demonstrated results:** Across two test cases (a multi-system pressurized water reactor (PWR) loop with a Heating, Ventilation, and Air Conditioning (HVAC) system configuration, and an HVAC system imported into Alchemy from a 2D P&ID export), Alchemy produced validated, zero-error IFC models and full structural analysis in roughly 90 seconds to 4 minutes, work that previously took hours manually.
 
-<p align="center">
-  <img src="images/10-ALCHEMY/ALCHEMY3.png" width="40%" alt="PWR with CVS multi-system">
-  <br><em>Figure: PWR with CVS multi-system.</em>
-</p>
 
-<p align="center">
-  <img src="images/10-ALCHEMY/ALCHEMY4.png" width="40%" alt="HVAC system imported from 2D P&ID">
-  <br><em>Figure: HVAC system imported from 2D P&ID.</em>
-</p>
+<table align="center">
+  <tr>
+    <td align="center" width="50%">
+      <img src="images/10-ALCHEMY/ALCHEMY3.png" width="74%" alt="Multi-system PWR loop with HVAC"><br>
+      <em>Figure 3a: Multi-system PWR loop with HVAC.</em>
+    </td>
+    <td align="center" width="50%">
+      <img src="images/10-ALCHEMY/ALCHEMY4.png" width="80%" alt="HVAC system imported from 2D P&ID"><br>
+      <em>Figure 3b: HVAC system imported from 2D P&ID export.</em>
+    </td>
+  </tr>
+</table>
 
 ---
 
@@ -76,8 +80,12 @@ Each specialist agent, including Alchemy, is built on **PrometheusAgent**, the p
 - **License:** Copyright 2025, Battelle Energy Alliance, LLC
 
 ### Additional Resources
-- **Contact:** Harleen Kaur Sandhu — harleen.sandhu@inl.gov · Drew Rizk — drew.rizk@inl.gov
+- **Contact:** Harleen Kaur Sandhu — harleen.sandhu@inl.gov 
+- **Contact:** Drew Rizk — drew.rizk@inl.gov
 ---
 
-*Last Updated: July 8th, 2026*
+*Last updated: July 9th, 2026* 
+
+*Project status: Active Development* 
+
 *Contributed by: Drew Rizk, Idaho National Laboratory*
