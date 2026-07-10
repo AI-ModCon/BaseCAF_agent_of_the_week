@@ -1,0 +1,91 @@
+<p align="center">
+  <img src="images/CAF-AotW-banner.svg" width="100%" alt="CAF AotW banner">
+</p>
+
+# 07/08/2026 &mdash; AotW#10: Alchemy — Agentic Autonomous 3D Preliminary Design and Structural Analysis for Nuclear Facilities
+
+---
+
+## Science Story
+
+
+The global expansion of nuclear power is driving demand for faster preliminary design of reactor systems such as primary coolant circuits, secondary heat exchange loops, cooling/ventilation networks, and the buildings that house them. Today this is a labor-intensive, multi-stage process where engineers define system topology in 2D piping and instrumentation diagrams (P&IDs), manually recreate that topology in 3D building information modeling (BIM) tools, then manually translate those models into finite element models (FEMs) for structural and seismic analysis. Each handoff between tools introduces interpretation errors, geometric inconsistencies, and loss of engineering intent, and any design change means repeating the whole chain. **Alchemy**, developed at Idaho National Laboratory (INL), closes this gap by taking natural-language system descriptions or structured P&ID exports and autonomously producing analysis-ready 3D facility models, turning a process that once took hours of manual modeling into one that takes minutes. **Alchemy** is being hosted on INL's Prometheus platform, an AI-driven scientific platform launched under the DOE's Genesis Mission (Executive Order 14363) to accelerate nuclear deployment through AI-driven design, licensing, manufacturing, construction, and operations. Through its agentic architecture and Model Context Protocol (MCP) integration, Alchemy operates as an intelligent, callable component within the Genesis Mission's American Science Cloud (AmSC) ecosystem, rather than a standalone engineering tool.
+
+---
+
+## Agentic Motivation
+
+Traditional BIM/FEM workflows rely entirely on manual re-authoring at every stage, with no shared data model connecting system intent to 3D geometry to structural analysis. Alchemy's agentic architecture removes this bottleneck in several ways:
+
+- **Autonomous multi-step orchestration:** A LangGraph-based state graph carries a design end-to-end, including parsing input, extracting and validating system intent, generating 3D BIM geometry in Industry Foundation Classes (IFC) format, converting to FEM, and running structural analysis, all without a human re-entering data at each handoff.
+- **Two-step reasoning to separate concerns:** Rather than asking one LLM call to simultaneously interpret engineering intent *and* conform to a strict schema, Alchemy splits this into (1) free-form intent extraction and (2) schema mapping guided by few-shot examples, making the pipeline far more reliable than one-shot generation.
+- **Self-correction via deterministic validation:** Before any geometry is generated, the agent runs deterministic topological checks (duplicate IDs, dangling edges, edge symmetry). Failures are fed back to the LLM as targeted repair prompts (up to 3 iterations) rather than surfaced as hard errors, combining rule-based rigor with LLM flexibility.
+- **Tool/backend delegation:** Computationally intensive tasks such as layout optimization, IFC authoring, A* pipe routing, BIM-to-FEM conversion and structural analysis, are delegated to specialized backend components, keeping the LLM focused on interpretation and orchestration rather than geometry math.
+- **Composable, agent-native deployment:** Built as an Agent-to-Agent (A2A) participant rather than a wrapped standalone tool, Alchemy can be invoked interactively by an engineer or orchestrated automatically by other agents in a larger multi-agent nuclear engineering workflow with no interface changes needed either way.
+
+---
+
+## Implementation
+
+Alchemy is a two-layer system: an **AI agent layer** handling natural language understanding, schema generation, and orchestration, and a **computational backend layer** executing geometry, routing, and structural analysis.
+
+**Agent orchestration:** Built on **LangGraph**, the agent is implemented as a subclass of the `PrometheusAgent` base class and deployed on Idaho National Laboratory's **Prometheus** multi-agent platform via the **A2A protocol**. At startup, it registers its agent card and advertises its `generate_optimized_ifc` skill to a platform registry; incoming task requests are routed to it by the Prometheus orchestrator or any A2A-compliant client, with progress streamed back via an `on_progress` callback. LLM calls are routed through **LiteLLM** for provider-agnostic access.
+
+<p align="center">
+  <img src="images/10-ALCHEMY/ALCHEMY1.png" width="70%" alt="Alchemy top-level workflow">
+  <br><em>Figure 1: Alchemy top-level workflow.</em>
+</p>
+
+**Core workflow (7-node LangGraph `StateGraph`):** `parse` → `transform` (two-step intent extraction + schema mapping, with the topological validation/self-correction loop running inside this node) → `validate` → `generate` (layout optimization, IFC generation, pipe routing) → optionally `convert_apdl` → `run_analysis` → `finalize` (structural analysis using Ansys APDL, and final artifact registration). A shared conditional routing function evaluates state after each node and can short-circuit to `END` on unrecoverable errors or when clarification is needed.
+
+**Backend pipeline:**
+- *Layout optimization* — grid search over candidate equipment positions/orientations minimizing total pipe length, with collision checks and building-size determination.
+- *BIM authoring* — native IFC 4.0 geometry (no proprietary intermediate formats) via **IfcOpenShell**, using constructive solid geometry for equipment and semantic IFC classes/PredefinedTypes (e.g., `IfcTank` / `REACTOR_PRESSURE_VESSEL`) to preserve engineering identity.
+- *Pipe routing* — **A\*** search with a Manhattan-distance heuristic and elbow-minimizing cost penalties, routing pipes in priority order by nuclear safety classification.
+- *BIM-to-FEM conversion* — IFC geometry mapped to **Ansys APDL**, with equipment ports converted to boundary conditions, for modal and seismic time-history structural analysis.
+
+**Data management:** All generated artifacts (IFC models, FE models, analysis results) are registered as typed records in **DeepLynx**, INL's linked engineering data catalog, with references persisted in Redis to provide traceability across the full design lifecycle.
+
+**About the Prometheus platform:** Prometheus is INL's multi-agent analysis platform where users interact through a Chainlit-based chat UI, and a central client-agent orchestrator routes each query to the appropriate specialist agent. Beyond orchestration, the platform provides shared infrastructure that Alchemy relies on directly: 3D visualization support for common engineering formats (Exodus, STL, IFC), multi-step/multi-turn analysis workflows with persistent conversation state, and a DeepLynx-backed artifact catalog shared across all agents. This shared catalog allows Alchemy's IFC and FEM outputs to be discovered and reused by other specialist agents in the platform without custom point-to-point integration.
+
+<p align="center">
+  <img src="images/10-ALCHEMY/ALCHEMY2.png" width="70%" alt="Prometheus platform architecture">
+  <br><em>Figure 2: Prometheus platform architecture.</em>
+</p>
+
+Each specialist agent, including Alchemy, is built on **PrometheusAgent**, the platform's Python base class for A2A-enabled agents. Rather than implementing the A2A protocol from scratch, an agent developer subclasses `PrometheusAgent` and implements a single method, `_execute()`, which receives the incoming task parameters and returns a result dict; the base class transparently handles agent card publication, registry self-registration, authentication, and the full A2A task lifecycle (emitting the initial "working" status, streaming progress updates, and closing out with a final "completed" or "failed" status). The base class also supplies higher-level helpers Alchemy uses in practice: structured JSON/file artifact emission (for registering IFC and FEM outputs), `INPUT_REQUIRED` forms for interactively requesting missing system information from the engineer, and per-conversation state persistence keyed on a stable `context_id` so a design session can span multiple turns. This shared foundation lets the Alchemy team focus development effort on nuclear-domain logic rather than on rebuilding agent plumbing already solved at the platform level.
+
+**Demonstrated results:** Across two test cases (a multi-system pressurized water reactor (PWR) loop with a Heating, Ventilation, and Air Conditioning (HVAC) system configuration, and an HVAC system imported into Alchemy from a 2D P&ID export), Alchemy produced validated, zero-error IFC models and full structural analysis in roughly 90 seconds to 4 minutes, work that previously took hours manually.
+
+
+<table align="center">
+  <tr>
+    <td align="center" width="50%">
+      <img src="images/10-ALCHEMY/ALCHEMY3.png" width="74%" alt="Multi-system PWR loop with HVAC"><br>
+      <em>Figure 3a: Multi-system PWR loop with HVAC.</em>
+    </td>
+    <td align="center" width="50%">
+      <img src="images/10-ALCHEMY/ALCHEMY4.png" width="80%" alt="HVAC system imported from 2D P&ID"><br>
+      <em>Figure 3b: HVAC system imported from 2D P&ID export.</em>
+    </td>
+  </tr>
+</table>
+
+---
+
+## To Know More
+
+### Source Code
+- **Repository:** Currently private (INL internal)
+- **License:** Copyright 2025, Battelle Energy Alliance, LLC
+
+### Additional Resources
+- **Contact:** Harleen Kaur Sandhu — harleen.sandhu@inl.gov 
+- **Contact:** Drew Rizk — drew.rizk@inl.gov
+---
+
+*Last updated: July 9th, 2026* 
+
+*Project status: Active Development* 
+
+*Contributed by: Drew Rizk, Idaho National Laboratory*
