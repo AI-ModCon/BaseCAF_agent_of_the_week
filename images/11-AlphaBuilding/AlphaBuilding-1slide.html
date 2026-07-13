@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AlphaBuilding Platform — Agent of the Week</title>
+  <style>
+    :root {
+      --ink: #102f3e;
+      --muted: #4e6b78;
+      --blue: #2e86ab;
+      --blue-dark: #176485;
+      --cyan: #54c7d9;
+      --mint: #66d1b5;
+      --paper: #f6fbfd;
+      --line: #c4dbe5;
+      --white: #ffffff;
+      --amber: #ffca73;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #dbe9ef;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    .slide {
+      position: relative;
+      width: min(100vw, calc(100vh * 16 / 9));
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 84% 8%, rgba(84, 199, 217, .18), transparent 22%),
+        linear-gradient(135deg, #ffffff 0%, #f9fcfd 56%, #eef8fb 100%);
+      box-shadow: 0 24px 70px rgba(16, 47, 62, .18);
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .32;
+      background-image:
+        linear-gradient(rgba(46, 134, 171, .08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(46, 134, 171, .08) 1px, transparent 1px);
+      background-size: 3.2% 5.7%;
+      mask-image: linear-gradient(90deg, transparent 0%, #000 50%, #000 100%);
+      pointer-events: none;
+    }
+
+    .top-rule {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1.3%;
+      background: linear-gradient(90deg, var(--blue-dark), var(--cyan) 66%, var(--mint));
+    }
+
+    header {
+      position: absolute;
+      left: 5.4%;
+      right: 5.2%;
+      top: 6.1%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 4%;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: .6em;
+      margin-bottom: .65em;
+      color: var(--blue-dark);
+      font-size: clamp(12px, 1.05vw, 20px);
+      font-weight: 760;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 1.9em;
+      height: .24em;
+      border-radius: 999px;
+      background: var(--mint);
+    }
+
+    h1 {
+      max-width: 1100px;
+      margin: 0;
+      font-size: clamp(38px, 4.15vw, 78px);
+      line-height: .99;
+      letter-spacing: -.045em;
+      font-weight: 780;
+    }
+
+    h1 em {
+      color: var(--blue);
+      font-style: normal;
+    }
+
+    .series-mark {
+      margin-top: .3%;
+      min-width: 15%;
+      text-align: right;
+      color: var(--muted);
+      font-size: clamp(11px, .92vw, 18px);
+      line-height: 1.45;
+    }
+
+    .series-mark strong {
+      display: block;
+      color: var(--ink);
+      font-size: 1.22em;
+      letter-spacing: -.01em;
+    }
+
+    .content {
+      position: absolute;
+      left: 5.4%;
+      right: 5.2%;
+      top: 27.3%;
+      bottom: 8.8%;
+      display: grid;
+      grid-template-columns: 72% 28%;
+      gap: 0;
+    }
+
+    .architecture {
+      position: relative;
+      padding-right: 4.8%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lead {
+      max-width: 90%;
+      margin: 0 0 3.3%;
+      color: var(--muted);
+      font-size: clamp(16px, 1.45vw, 28px);
+      line-height: 1.32;
+      letter-spacing: -.012em;
+    }
+
+    .lead strong { color: var(--ink); font-weight: 700; }
+
+    .flow-label {
+      margin-bottom: 1.5%;
+      color: var(--blue-dark);
+      font-size: clamp(11px, .9vw, 17px);
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .flow {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      align-items: start;
+      gap: 1.25%;
+      padding-top: 1.1%;
+    }
+
+    .flow::before {
+      content: "";
+      position: absolute;
+      left: 6.8%;
+      right: 6.8%;
+      top: 24%;
+      height: 4px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--line), var(--blue), var(--cyan), var(--mint));
+      z-index: 0;
+    }
+
+    .step {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .node {
+      width: clamp(43px, 4vw, 76px);
+      aspect-ratio: 1;
+      margin: 0 auto 10%;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: clamp(2px, .16vw, 3px) solid var(--blue);
+      background: #fff;
+      color: var(--blue-dark);
+      box-shadow: 0 7px 18px rgba(46, 134, 171, .14);
+      font-size: clamp(17px, 1.55vw, 30px);
+      font-weight: 800;
+    }
+
+    .step:nth-child(2) .node { background: #eff8fb; }
+    .step:nth-child(3) .node,
+    .step:nth-child(4) .node { background: #e9f8f7; border-color: #39a6ac; color: #247a80; }
+    .step:nth-child(5) .node { background: #eaf8f2; border-color: #42b594; color: #288268; }
+    .step:nth-child(6) .node { background: var(--ink); border-color: var(--ink); color: white; }
+
+    .step b {
+      display: block;
+      margin-bottom: 4%;
+      font-size: clamp(12px, 1.05vw, 20px);
+      line-height: 1.05;
+      letter-spacing: -.015em;
+    }
+
+    .step span {
+      display: block;
+      padding: 0 3%;
+      color: var(--muted);
+      font-size: clamp(9px, .72vw, 14px);
+      line-height: 1.23;
+    }
+
+    .foundation {
+      position: relative;
+      margin-top: 4.4%;
+      padding: 2.35% 3% 2.35% 12.3%;
+      min-height: 15.5%;
+      display: flex;
+      align-items: center;
+      border-radius: 1.2vw;
+      background: linear-gradient(90deg, var(--ink), #174a60 62%, #1b6474);
+      color: white;
+      box-shadow: 0 12px 28px rgba(16, 47, 62, .16);
+    }
+
+    .foundation-icon {
+      position: absolute;
+      left: 3.2%;
+      width: 6.8%;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(102, 209, 181, .15);
+      border: 1px solid rgba(102, 209, 181, .55);
+      color: var(--mint);
+      font-size: clamp(16px, 1.6vw, 30px);
+      font-weight: 800;
+    }
+
+    .foundation strong {
+      display: block;
+      margin-right: .45em;
+      font-size: clamp(13px, 1.15vw, 22px);
+      letter-spacing: -.01em;
+    }
+
+    .foundation p {
+      margin: 0;
+      color: #d8eaf0;
+      font-size: clamp(10px, .88vw, 17px);
+      line-height: 1.35;
+    }
+
+    .plugline {
+      margin-top: 2.2%;
+      display: flex;
+      align-items: center;
+      gap: 2.1%;
+      color: var(--muted);
+      font-size: clamp(10px, .87vw, 17px);
+      line-height: 1.25;
+    }
+
+    .plugline .tag {
+      flex: none;
+      padding: .55em .8em;
+      border-radius: 999px;
+      background: #e9f8f7;
+      color: #247a80;
+      font-weight: 760;
+    }
+
+    .pilots {
+      margin-top: 3%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.4%;
+    }
+
+    .pilot {
+      padding: 2.2% 3%;
+      border-radius: .9vw;
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: 0 6px 16px rgba(46, 134, 171, .08);
+    }
+
+    .pilot b {
+      display: block;
+      margin-bottom: .3em;
+      color: var(--blue-dark);
+      font-size: clamp(11px, .95vw, 18px);
+      letter-spacing: -.01em;
+    }
+
+    .pilot p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(9px, .78vw, 15px);
+      line-height: 1.35;
+    }
+
+    .impact {
+      position: relative;
+      padding: 7.2% 7% 4.5% 9.2%;
+      border-left: 1px solid var(--line);
+    }
+
+    .impact::before {
+      content: "";
+      position: absolute;
+      left: -4px;
+      top: 5.5%;
+      width: 7px;
+      height: 18%;
+      border-radius: 99px;
+      background: var(--cyan);
+    }
+
+    .impact h2 {
+      margin: 0 0 9%;
+      font-size: clamp(19px, 1.8vw, 34px);
+      line-height: 1.08;
+      letter-spacing: -.035em;
+    }
+
+    .impact-item {
+      position: relative;
+      margin-bottom: 8.2%;
+      padding-left: 14%;
+    }
+
+    .impact-item::before {
+      content: attr(data-n);
+      position: absolute;
+      left: 0;
+      top: -.05em;
+      color: var(--blue);
+      font-size: clamp(12px, 1.05vw, 20px);
+      font-weight: 850;
+      letter-spacing: .02em;
+    }
+
+    .impact-item b {
+      display: block;
+      margin-bottom: .24em;
+      color: var(--ink);
+      font-size: clamp(12px, 1.08vw, 21px);
+      line-height: 1.14;
+    }
+
+    .impact-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(10px, .82vw, 16px);
+      line-height: 1.38;
+    }
+
+    footer {
+      position: absolute;
+      left: 5.4%;
+      right: 5.2%;
+      bottom: 3.4%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: clamp(10px, .82vw, 16px);
+    }
+
+    .contact strong { color: var(--ink); }
+
+    .tech {
+      display: flex;
+      align-items: center;
+      gap: .55em;
+      font-weight: 650;
+    }
+
+    .tech i {
+      width: .55em;
+      height: .55em;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 1.1em 0 0 var(--cyan), 2.2em 0 0 var(--blue);
+      margin-right: 2.2em;
+    }
+
+    @media print {
+      html, body { background: white; }
+      .slide { width: 100vw; height: 100vh; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="slide" role="img" aria-label="One-slide overview of the AlphaBuilding multi-agent platform">
+    <div class="top-rule"></div>
+
+    <header>
+      <div>
+        <div class="eyebrow">AlphaBuilding Platform</div>
+        <h1>Building analytics,<br /><em>orchestrated end to end.</em></h1>
+      </div>
+      <div class="series-mark">
+        <strong>Agent of the Week</strong>
+        Common Agentic Framework<br />DOE Genesis ModCon
+      </div>
+    </header>
+
+    <section class="content">
+      <div class="architecture">
+        <p class="lead">
+          A LangGraph multi-agent system turns a natural-language question into a
+          <strong>validated, reproducible building-energy analysis</strong>—across distributed domain tools.
+        </p>
+
+        <div class="flow-label">Agentic workflow &mdash; five specialized agents, request to validated result</div>
+        <div class="flow" aria-label="Orchestrate, discover, validate, transform, execute, explain">
+          <div class="step">
+            <div class="node">1</div>
+            <b>Orchestrate</b>
+            <span>Classify intent, choose algorithm</span>
+          </div>
+          <div class="step">
+            <div class="node">2</div>
+            <b>Discover</b>
+            <span>Map data sources</span>
+          </div>
+          <div class="step">
+            <div class="node">3</div>
+            <b>Validate</b>
+            <span>Check coverage &amp; quality</span>
+          </div>
+          <div class="step">
+            <div class="node">4</div>
+            <b>Transform</b>
+            <span>Generate preparation code</span>
+          </div>
+          <div class="step">
+            <div class="node">5</div>
+            <b>Execute</b>
+            <span>Invoke MCP tool</span>
+          </div>
+          <div class="step">
+            <div class="node">+</div>
+            <b>Explain</b>
+            <span>Interpret &amp; report results</span>
+          </div>
+        </div>
+
+        <div class="foundation">
+          <div class="foundation-icon">↔</div>
+          <div>
+            <strong>Shared blackboard state keeps every agent aligned.</strong>
+            <p>Request context, semantic mappings, quality evidence, transformations and results remain traceable through the workflow.</p>
+          </div>
+        </div>
+
+        <div class="plugline">
+          <span class="tag">Plug-and-play</span>
+          <span><strong>Declarative YAML specifications</strong> define data contracts; <strong>MCP</strong> connects independently deployed analytics tools.</span>
+        </div>
+
+        <div class="pilots">
+          <div class="pilot">
+            <b>Pilot · Energy benchmarking</b>
+            <p>Raw monthly utility bills &rarr; automated unit conversion &rarr; validated BETTER/BPD benchmark, from one natural-language request.</p>
+          </div>
+          <div class="pilot">
+            <b>Pilot · AHU fault detection</b>
+            <p>Heterogeneous sensor files &rarr; semantic column mapping &rarr; whole-building HVAC diagnostics with interpreted findings.</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="impact">
+        <h2>Designed for real building workflows</h2>
+
+        <div class="impact-item" data-n="01">
+          <b>Scientific reach</b>
+          <p>Energy benchmarking, fault diagnostics, forecasting and cross-domain analysis.</p>
+        </div>
+
+        <div class="impact-item" data-n="02">
+          <b>Data-aware reasoning</b>
+          <p>Semantic discovery, explicit quality gates and adaptive preparation before execution.</p>
+        </div>
+
+        <div class="impact-item" data-n="03">
+          <b>Composable by design</b>
+          <p>New algorithms and MCP servers can be introduced without rebuilding the orchestration layer.</p>
+        </div>
+      </aside>
+    </section>
+
+    <footer>
+      <div class="contact"><strong>Han Li</strong> · hanli@lbl.gov &nbsp;·&nbsp; PI: <strong>Tianzhen Hong</strong> · thong@lbl.gov &nbsp;·&nbsp; Lawrence Berkeley National Laboratory</div>
+      <div class="tech"><i></i>LangGraph · YAML contracts · MCP tools</div>
+    </footer>
+  </main>
+</body>
+</html>
