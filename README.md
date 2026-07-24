@@ -18,6 +18,7 @@ The CAF **Agent of the Week**  (AotW) is an exemplary agentic application or ind
 9. [**Open AI Co-Scientist   &mdash; Open Hypothesis Evolution for Scientific Discovery**](AotW-09-OpenAICoScientist.md)
 10. [**Alchemy &mdash; Agentic Autonomous 3D Preliminary Design and Structural Analysis for Nuclear Facilities**](AotW-10-ALCHEMY.md)
 11. [**AlphaBuilding &mdash; Multi-Agent Orchestration for Plug-and-Play Building Energy Analytics**](AotW-11-AlphaBuilding.md)
+12. [**MagQuery &mdash; Citation-Grounded Question Answering for Magnetic Materials Science**](AotW-12-MagQuery.md)
 
 ## How to become an Agent of the Week
 
