@@ -14,10 +14,14 @@ These are failures of access, not of intelligence. Large language models have be
 
 **MagQuery**, developed at Stanford University and SLAC National Accelerator Laboratory under the DOE Genesis Mission CM2US seed model team, makes that data visible. It is a framework that helps LLMs interface with and understand a user's scientific data, connecting the model's reasoning directly to the measurements, simulations, and curated databases of a research group. Ask a question in plain English, and MagQuery brings three strengths together in a single answer: the reasoning power of a modern LLM, evidence gathered from the scientific literature, and the user's own experimental or computational data. Every answer cites the specific papers that support it, and when the evidence is not there, MagQuery says so rather than guessing: no fabricated values, no phantom references. This direct interface to physical, experimental, and computational data is what makes MagQuery unique. It expands a scientist's ability to analyze their own data, answer scientific questions, test hypotheses, and discover new science.
 
+<br>
+
 <p align="center">
-  <img src="images/12-MagQuery/magquery-demo-question.png" width="75%" alt="Example MagQuery interaction: a user asks how to reduce Nd/Dy content in an EV traction-motor magnet while preserving high-temperature demagnetization resistance; the system returns ranked candidate material families with reported trade-offs and citations.">
+  <img src="images/12-MagQuery/magquery-demo-question.png" width="55%" alt="Example MagQuery interaction: a user asks how to reduce Nd/Dy content in an EV traction-motor magnet while preserving high-temperature demagnetization resistance; the system returns ranked candidate material families with reported trade-offs and citations.">
   <br><em>Figure 1: An example MagQuery interaction. A plain-English design question returns ranked candidate material families with their reported trade-offs (coercivity, remanence, Curie temperature, rare-earth content, cost, manufacturing maturity), each backed by citations and uncertainty, plus next-step experimental guidance.</em>
 </p>
+
+<br>
 
 ---
 
@@ -30,15 +34,21 @@ Scientific question answering over a specialized materials corpus requires capab
 - **Citation grounding as a hard constraint:** The agent is designed to emit bare BibTeX citation keys and never fabricate references. Answers without grounded citations are abstentions. A sandboxed **Python REPL** is available for numerical processing of large result sets (e.g., computing averages across multiple reported measurements), keeping complex post-processing out of the LLM's reasoning chain.
 - **DSPy-based prompt optimization:** Rather than hand-engineering prompts, MagQuery uses **DSPy** with the GEPA and MIPROv2 optimizers to systematically improve the prompts of individual agent modules against the MagQuery-Bench development split — making the optimization process itself reproducible and principled.
 
+<br>
+
 <p align="center">
   <img src="images/12-MagQuery/DSPy.png" width="90%" alt="DSPy multi-hop planner: the agent interleaves SQL/context/validation tools and a literature-search tool in a retrieve/reformulate/try-again loop, returning db_result and literature excerpts; prompts are optimized against a gold QA set.">
   <br><em>Figure 2: MagQuery's DSPy multi-hop planner. The agent interleaves SQL/context/validation tools with literature search in a multi-hop retrieve → reformulate → try-again loop, then optimizes its prompts (signatures, examples, tool-use strategy) against a gold QA set — turning subjective prompt tweaking into measurable iteration rather than updating any model weights.</em>
 </p>
 
+<br>
+
 <p align="center">
   <img src="images/12-MagQuery/ablation.png" width="88%" alt="Grouped bar chart of mean score by condition and split on MagQuery-Bench. The full system is highest on every split; sql_only and tools_no_orchestration trail; rag_only, web_search, and closed_book collapse.">
   <br><em>Figure 3: Component ablation on MagQuery-Bench (752 items, 3-shot, LLM-judged mean score). The full system is best on every split; removing structured orchestration costs +0.10*** (public) / +0.15*** (private), and retrieval-ablated conditions (rag_only, web_search, closed_book) collapse on database-grounded questions.</em>
 </p>
+
+<br>
 
 ---
 
@@ -46,17 +56,25 @@ Scientific question answering over a specialized materials corpus requires capab
 
 MagQuery is organized as four Python packages: `mq-app` (client/agent layer, CLI, DSPy modules, prompt optimization), `mq-server` (FastAPI HTTP API and MCP server exposing tools), `mq-suql` (SUQL integration layer), and `mq-lib` (shared data models and API contract). Literature retrieval is backed by **OpenSearch** with both BM25 and embedding-cosine-similarity search. The materials database is served via SQLite. LLM access is routed through a **LiteLLM proxy** (`mq-litellm`) against the Stanford AI API Gateway, making the system model-agnostic: any OpenAI-API-compatible provider can be substituted.
 
+<br>
+
 <p align="center">
   <img src="images/12-MagQuery/architecture.png" width="95%" alt="MagQuery architecture: a user question enters a DSPy multi-hop agent (planner + Python answer extraction) that fuses SQL over a materials database and literature retrieval via SUQL, served over mq-server (FastAPI + MCP), backed by a SQLite materials DB and an OpenSearch literature index, with a model-agnostic LiteLLM gateway and DSPy/MLflow optimization; the agent returns a cited answer or abstains.">
   <br><em>Figure 4: MagQuery architecture. A DSPy multi-hop planner fuses structured SQL over the materials database with literature retrieval (BM25 + embeddings) via SUQL in a single loop, then a Python-REPL answer-extraction step returns a citation-grounded answer — or abstains. Tools are served over mq-server (FastAPI + MCP); the LLM backend is model-agnostic (LiteLLM); prompts are tuned with DSPy and traced with MLflow. The materials database and literature index together form the MagQuery dataset, with full source provenance.</em>
 </p>
 
+<br>
+
 The agent exposes both a CLI (`mq ask`) and an **MCP server**, enabling integration into broader agentic workflows. DSPy optimization (`mq train`) produces optimized-prompt artifacts stored separately from code — no model weights are trained or redistributed. The full stack is deployable via Docker Compose. The evaluation benchmark **MagQuery-Bench** (752 items, `dev`/`test_public`/`test_private` splits) provides a reproducible evaluation substrate with citation-grounded scoring by an LLM judge.
+
+<br>
 
 <p align="center">
   <img src="images/12-MagQuery/pipeline.png" width="90%" alt="Build-and-serve pipeline: a domain package (structured dataset, literature PDFs, BibTeX, QA pairs) is indexed by mq-suql into SQLite and OpenSearch backends, exposed through an MCP/FastAPI tool server, and consumed by a DSPy multi-hop planner and Python answer extraction, producing evaluated output with MLflow traces.">
   <br><em>Figure 5: Build-and-serve pipeline. A domain package (structured dataset, literature PDFs, BibTeX, QA pairs) is indexed by <code>mq-suql</code> into SQLite and OpenSearch backends, exposed through an MCP/FastAPI tool server, and consumed by the DSPy multi-hop planner and Python answer extraction — producing evaluated output with MLflow traces.</em>
 </p>
+
+<br>
 
 ---
 
@@ -75,9 +93,9 @@ MagQuery applies the same retrieval-and-reasoning architecture demonstrated for 
 - **MagQuery dataset:** sibling DOE Data Explorer submission (BibTeX-indexed literature + property database)
 - **Contact:** Johannes Voss — vossj@slac.stanford.edu, SLAC National Accelerator Laboratory (ORCID: 0000-0001-7740-8811)
 - **Contact:** Sreya Vangara — svangara@stanford.edu, Stanford University (ORCID: 0000-0002-4762-8773)
-- **Contact:** Eric Darve — darve@stanford.edu, Stanford University (ORCID: 0000-0002-1938-3836)
+- **Contact:** Eric Darve (PI) — darve@stanford.edu, Stanford University (ORCID: 0000-0002-1938-3836)
 
 ---
 
 *Last Updated: July 23, 2026*
-*Contributed by: Sreya Vangara, Jonathan Thompson, Eric Darve — Stanford University; Johannes Voss — SLAC National Accelerator Laboratory*
+*Contributed by: Sreya Vangara, Jonathan Thompson, Eric Darve (PI) — Stanford University; Johannes Voss — SLAC National Accelerator Laboratory*
