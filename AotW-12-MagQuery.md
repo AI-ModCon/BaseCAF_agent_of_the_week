@@ -85,7 +85,7 @@ The agent exposes both a CLI (`mq ask`) and an **MCP server**, enabling integrat
 - **License:** Apache 2.0
 
 ### Related Publication
-MagQuery applies the same retrieval-and-reasoning architecture demonstrated for battery science in:
+MagQuery is founded on similar retrieval-and-reasoning architecture previously demonstrated for battery science in:
 
 - Vangara, S.; Nanda, J.; Tzeng, Y.-K.; Darve, E. *SpectraQuery: A Hybrid Retrieval-Augmented Conversational Assistant for Battery Science.* arXiv:2601.09036 (2026). [doi:10.48550/arXiv.2601.09036](https://doi.org/10.48550/arXiv.2601.09036)
 
