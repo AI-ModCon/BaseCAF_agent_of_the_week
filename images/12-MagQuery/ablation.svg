@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520" font-family="Helvetica,Arial,sans-serif">
+  <rect x="0" y="0" width="900" height="520" fill="#ffffff"/>
+
+  <!-- Title + subtitle -->
+  <text x="70" y="28" font-size="19" font-weight="bold" fill="#1a1a1a">MagQuery-Bench &#8212; component ablation (3-shot, LLM-judged mean score)</text>
+  <text x="70" y="50" font-size="13" font-weight="bold" fill="#08519c">Full orchestration beats the same tools without orchestration by +0.10*** (public) / +0.15*** (private) &#8212; and is best on every split.</text>
+
+  <!-- Highlight band behind the "full" group -->
+  <rect x="70" y="70" width="135" height="360" fill="#fff3d6"/>
+
+  <!-- Plot border -->
+  <rect x="70" y="70" width="810" height="360" fill="none" stroke="#cccccc" stroke-width="1"/>
+
+  <!-- Gridlines + y labels (0.0 .. 0.6) -->
+  <g stroke="#e6e6e6" stroke-width="1">
+    <line x1="70" y1="430" x2="880" y2="430"/>
+    <line x1="70" y1="370" x2="880" y2="370"/>
+    <line x1="70" y1="310" x2="880" y2="310"/>
+    <line x1="70" y1="250" x2="880" y2="250"/>
+    <line x1="70" y1="190" x2="880" y2="190"/>
+    <line x1="70" y1="130" x2="880" y2="130"/>
+    <line x1="70" y1="70"  x2="880" y2="70"/>
+  </g>
+  <g font-size="11" fill="#666666" text-anchor="end">
+    <text x="62" y="434">0.0</text>
+    <text x="62" y="374">0.1</text>
+    <text x="62" y="314">0.2</text>
+    <text x="62" y="254">0.3</text>
+    <text x="62" y="194">0.4</text>
+    <text x="62" y="134">0.5</text>
+    <text x="62" y="74">0.6</text>
+  </g>
+  <text x="24" y="250" font-size="12" fill="#444444" text-anchor="middle" transform="rotate(-90 24 250)">mean score (0&#8211;1)</text>
+
+  <!-- Legend (top-right, over the short bars) -->
+  <g font-size="11.5" fill="#333333">
+    <rect x="700" y="86" width="13" height="13" fill="#9ecae1"/><text x="719" y="97">dev (n=169)</text>
+    <rect x="700" y="106" width="13" height="13" fill="#4292c6"/><text x="719" y="117">test_public (n=455)</text>
+    <rect x="700" y="126" width="13" height="13" fill="#08519c"/><text x="719" y="137">test_private (n=128)</text>
+  </g>
+
+  <!-- ===================== BARS ===================== -->
+  <!-- colors: dev #9ecae1, public #4292c6, private #08519c -->
+
+  <!-- Group 0: full -->
+  <rect x="86.5"  y="188.8" width="30" height="241.2" fill="#9ecae1"/>
+  <rect x="122.5" y="128.2" width="30" height="301.8" fill="#4292c6"/>
+  <rect x="158.5" y="115.0" width="30" height="315.0" fill="#08519c"/>
+  <g font-size="9" fill="#333" text-anchor="middle">
+    <text x="101.5" y="184">0.40</text>
+    <text x="137.5" y="123">0.50</text>
+    <text x="173.5" y="110">0.53</text>
+  </g>
+
+  <!-- Group 1: sql_only -->
+  <rect x="221.5" y="274.0" width="30" height="156.0" fill="#9ecae1"/>
+  <rect x="257.5" y="151.6" width="30" height="278.4" fill="#4292c6"/>
+  <rect x="293.5" y="166.6" width="30" height="263.4" fill="#08519c"/>
+  <g font-size="9" fill="#333" text-anchor="middle">
+    <text x="236.5" y="269">0.26</text>
+    <text x="272.5" y="147">0.46</text>
+    <text x="308.5" y="162">0.44</text>
+  </g>
+
+  <!-- Group 2: tools_no_orchestration -->
+  <rect x="356.5" y="362.8" width="30" height="67.2"  fill="#9ecae1"/>
+  <rect x="392.5" y="190.0" width="30" height="240.0" fill="#4292c6"/>
+  <rect x="428.5" y="205.6" width="30" height="224.4" fill="#08519c"/>
+  <g font-size="9" fill="#333" text-anchor="middle">
+    <text x="371.5" y="358">0.11</text>
+    <text x="407.5" y="185">0.40</text>
+    <text x="443.5" y="201">0.37</text>
+  </g>
+
+  <!-- Group 3: closed_book -->
+  <rect x="491.5" y="291.4" width="30" height="138.6" fill="#9ecae1"/>
+  <rect x="527.5" y="359.2" width="30" height="70.8"  fill="#4292c6"/>
+  <rect x="563.5" y="353.8" width="30" height="76.2"  fill="#08519c"/>
+  <g font-size="9" fill="#333" text-anchor="middle">
+    <text x="506.5" y="287">0.23</text>
+    <text x="542.5" y="355">0.12</text>
+    <text x="578.5" y="349">0.13</text>
+  </g>
+
+  <!-- Group 4: web_search -->
+  <rect x="626.5" y="383.8" width="30" height="46.2" fill="#9ecae1"/>
+  <rect x="662.5" y="394.6" width="30" height="35.4" fill="#4292c6"/>
+  <rect x="698.5" y="383.8" width="30" height="46.2" fill="#08519c"/>
+  <g font-size="9" fill="#333" text-anchor="middle">
+    <text x="641.5" y="379">0.08</text>
+    <text x="677.5" y="390">0.06</text>
+    <text x="713.5" y="379">0.08</text>
+  </g>
+
+  <!-- Group 5: rag_only -->
+  <rect x="761.5" y="387.4" width="30" height="42.6" fill="#9ecae1"/>
+  <rect x="797.5" y="413.8" width="30" height="16.2" fill="#4292c6"/>
+  <rect x="833.5" y="414.4" width="30" height="15.6" fill="#08519c"/>
+  <g font-size="9" fill="#333" text-anchor="middle">
+    <text x="776.5" y="383">0.07</text>
+    <text x="812.5" y="409">0.03</text>
+    <text x="848.5" y="410">0.03</text>
+  </g>
+
+  <!-- x-axis baseline -->
+  <line x1="70" y1="430" x2="880" y2="430" stroke="#888888" stroke-width="1.5"/>
+
+  <!-- Condition labels -->
+  <g font-size="11" fill="#222222" text-anchor="middle">
+    <text x="137.5" y="448" font-weight="bold" fill="#8a5a00">&#9733; full</text>
+    <text x="272.5" y="448">sql_only</text>
+    <text x="407.5" y="448">tools_no_orchestration</text>
+    <text x="542.5" y="448">closed_book</text>
+    <text x="677.5" y="448">web_search</text>
+    <text x="812.5" y="448">rag_only</text>
+  </g>
+
+  <!-- Footnote -->
+  <text x="70" y="486" font-size="10.5" fill="#777777">Overall mean score across all question families; &#916; vs. full by paired bootstrap, McNemar exact test (*** p&lt;.001). Generator: claude-sonnet-4-5; judge: gemini-2.5-pro.</text>
+  <text x="70" y="502" font-size="10.5" fill="#777777">rag_only / web_search / closed_book cannot reach the structured property values, so they collapse on database-grounded questions.</text>
+</svg>
