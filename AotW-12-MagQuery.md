@@ -17,7 +17,7 @@ These are failures of access, not of intelligence. Large language models have be
 <br>
 
 <p align="center">
-  <img src="images/12-MagQuery/magquery-demo-question.png" width="55%" alt="Example MagQuery interaction: a user asks how to reduce Nd/Dy content in an EV traction-motor magnet while preserving high-temperature demagnetization resistance; the system returns ranked candidate material families with reported trade-offs and citations.">
+  <img src="images/12-MagQuery/magquery-demo-question.png" width=65%" alt="Example MagQuery interaction: a user asks how to reduce Nd/Dy content in an EV traction-motor magnet while preserving high-temperature demagnetization resistance; the system returns ranked candidate material families with reported trade-offs and citations.">
   <br><em>Figure 1: An example MagQuery interaction. A plain-English design question returns ranked candidate material families with their reported trade-offs (coercivity, remanence, Curie temperature, rare-earth content, cost, manufacturing maturity), each backed by citations and uncertainty, plus next-step experimental guidance.</em>
 </p>
 
@@ -37,14 +37,14 @@ Scientific question answering over a specialized materials corpus requires capab
 <br>
 
 <p align="center">
-  <img src="images/12-MagQuery/DSPy.png" width="90%" alt="DSPy multi-hop planner: the agent interleaves SQL/context/validation tools and a literature-search tool in a retrieve/reformulate/try-again loop, returning db_result and literature excerpts; prompts are optimized against a gold QA set.">
+  <img src="images/12-MagQuery/DSPy.png" width="85%" alt="DSPy multi-hop planner: the agent interleaves SQL/context/validation tools and a literature-search tool in a retrieve/reformulate/try-again loop, returning db_result and literature excerpts; prompts are optimized against a gold QA set.">
   <br><em>Figure 2: MagQuery's DSPy multi-hop planner. The agent interleaves SQL/context/validation tools with literature search in a multi-hop retrieve → reformulate → try-again loop, then optimizes its prompts (signatures, examples, tool-use strategy) against a gold QA set — turning subjective prompt tweaking into measurable iteration rather than updating any model weights.</em>
 </p>
 
 <br>
 
 <p align="center">
-  <img src="images/12-MagQuery/ablation.png" width="88%" alt="Grouped bar chart of mean score by condition and split on MagQuery-Bench. The full system is highest on every split; sql_only and tools_no_orchestration trail; rag_only, web_search, and closed_book collapse.">
+  <img src="images/12-MagQuery/ablation.png" width="85%" alt="Grouped bar chart of mean score by condition and split on MagQuery-Bench. The full system is highest on every split; sql_only and tools_no_orchestration trail; rag_only, web_search, and closed_book collapse.">
   <br><em>Figure 3: Component ablation on MagQuery-Bench (752 items, 3-shot, LLM-judged mean score). The full system is best on every split; removing structured orchestration costs +0.10*** (public) / +0.15*** (private), and retrieval-ablated conditions (rag_only, web_search, closed_book) collapse on database-grounded questions.</em>
 </p>
 
@@ -59,7 +59,7 @@ MagQuery is organized as four Python packages: `mq-app` (client/agent layer, CLI
 <br>
 
 <p align="center">
-  <img src="images/12-MagQuery/architecture.png" width="95%" alt="MagQuery architecture: a user question enters a DSPy multi-hop agent (planner + Python answer extraction) that fuses SQL over a materials database and literature retrieval via SUQL, served over mq-server (FastAPI + MCP), backed by a SQLite materials DB and an OpenSearch literature index, with a model-agnostic LiteLLM gateway and DSPy/MLflow optimization; the agent returns a cited answer or abstains.">
+  <img src="images/12-MagQuery/architecture.png" width="80%" alt="MagQuery architecture: a user question enters a DSPy multi-hop agent (planner + Python answer extraction) that fuses SQL over a materials database and literature retrieval via SUQL, served over mq-server (FastAPI + MCP), backed by a SQLite materials DB and an OpenSearch literature index, with a model-agnostic LiteLLM gateway and DSPy/MLflow optimization; the agent returns a cited answer or abstains.">
   <br><em>Figure 4: MagQuery architecture. A DSPy multi-hop planner fuses structured SQL over the materials database with literature retrieval (BM25 + embeddings) via SUQL in a single loop, then a Python-REPL answer-extraction step returns a citation-grounded answer — or abstains. Tools are served over mq-server (FastAPI + MCP); the LLM backend is model-agnostic (LiteLLM); prompts are tuned with DSPy and traced with MLflow. The materials database and literature index together form the MagQuery dataset, with full source provenance.</em>
 </p>
 
@@ -70,7 +70,7 @@ The agent exposes both a CLI (`mq ask`) and an **MCP server**, enabling integrat
 <br>
 
 <p align="center">
-  <img src="images/12-MagQuery/pipeline.png" width="90%" alt="Build-and-serve pipeline: a domain package (structured dataset, literature PDFs, BibTeX, QA pairs) is indexed by mq-suql into SQLite and OpenSearch backends, exposed through an MCP/FastAPI tool server, and consumed by a DSPy multi-hop planner and Python answer extraction, producing evaluated output with MLflow traces.">
+  <img src="images/12-MagQuery/pipeline.png" width="83%" alt="Build-and-serve pipeline: a domain package (structured dataset, literature PDFs, BibTeX, QA pairs) is indexed by mq-suql into SQLite and OpenSearch backends, exposed through an MCP/FastAPI tool server, and consumed by a DSPy multi-hop planner and Python answer extraction, producing evaluated output with MLflow traces.">
   <br><em>Figure 5: Build-and-serve pipeline. A domain package (structured dataset, literature PDFs, BibTeX, QA pairs) is indexed by <code>mq-suql</code> into SQLite and OpenSearch backends, exposed through an MCP/FastAPI tool server, and consumed by the DSPy multi-hop planner and Python answer extraction — producing evaluated output with MLflow traces.</em>
 </p>
 
