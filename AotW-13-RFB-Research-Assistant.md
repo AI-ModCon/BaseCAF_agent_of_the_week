@@ -2,7 +2,7 @@
   <img src="../images/CAF-AotW-banner.svg" width="100%" alt="CAF AotW banner">
 </p>
 
-# [Date] &mdash; AotW#[Number]: RFB Research Assistant &mdash; Agentic Literature Intelligence for Redox Flow Battery Research
+# 08/04/26 &mdash; AotW#13: RFB Research Assistant &mdash; Agentic Literature Intelligence for Redox Flow Battery Research
 
 ---
 
@@ -61,5 +61,5 @@ The system has been described in a peer-reviewed publication:
 
 ---
 
-*Last Updated: [Date]*
+*Last Updated: 08/04/2026*
 *Contributed by: Ruozhu Feng — Pacific Northwest National Laboratory, Energy Storage Materials Initiative*
