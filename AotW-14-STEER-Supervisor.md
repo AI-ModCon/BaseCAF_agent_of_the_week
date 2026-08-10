@@ -2,7 +2,7 @@
   <img src="../images/CAF-AotW-banner.svg" width="100%" alt="CAF AotW banner">
 </p>
 
-# 08/01/2026 &mdash; AotW#14: STEER Supervisor Agent &mdash; Central Orchestration for Autonomous Electrochemistry
+# 08/10/2026 &mdash; AotW#14: STEER Supervisor Agent &mdash; Central Orchestration for Autonomous Electrochemistry
 
 ---
 

@@ -20,6 +20,7 @@ The CAF **Agent of the Week**  (AotW) is an exemplary agentic application or ind
 11. [**AlphaBuilding &mdash; Multi-Agent Orchestration for Plug-and-Play Building Energy Analytics**](AotW-11-AlphaBuilding.md)
 12. [**MagQuery &mdash; Citation-Grounded Question Answering for Magnetic Materials Science**](AotW-12-MagQuery.md)
 13. [**RFB Research Assistant &mdash; Agentic Literature Intelligence for Redox Flow Battery Research**](AotW-13-RFB-Research-Assistant.md)
+14. [**STEER Supervisor Agent &mdash; Central Orchestration for Autonomous Electrochemistry**](AotW-14-STEER-Supervisor.md)
 
 ## How to become an Agent of the Week
 
