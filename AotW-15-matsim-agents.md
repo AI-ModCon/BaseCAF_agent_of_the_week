@@ -15,8 +15,8 @@ and relaxation calculations, but an out-of-distribution surrogate prediction can
 misdirect a campaign unless the workflow recognizes uncertainty and requests
 higher-fidelity evidence.
 
-**matsim-agents**, developed at Oak Ridge National Laboratory by the Multi-Agentic
-AI for Materials team, connects scientific reasoning to atomistic computation. A
+**matsim-agents**, developed at Oak Ridge National Laboratory by the ModCon Seed Team
+Critical Minerals and Materials to Unlock Supply (CM2US), connects scientific reasoning to atomistic computation. A
 researcher can state an objective in natural language; agents then plan calculations,
 generate candidate crystal structures, relax them with a selected MLIP, assess
 convergence and stability, and preserve the evidence behind each decision. When a
@@ -124,4 +124,4 @@ support, scientific campaign orchestration, and cross-facility qualification.
 ---
 
 *Last Updated: September 29, 2026*  
-*Contributed by: ORNL Multi-Agentic AI for Materials Team and ORNL HydraGNN Development Team &mdash; Oak Ridge National Laboratory*
+*Contributed by: ModCon Seed Team Critical Minerals and Materials to Unlock Supply (CM2US) and ORNL HydraGNN Development Team &mdash; Oak Ridge National Laboratory*
