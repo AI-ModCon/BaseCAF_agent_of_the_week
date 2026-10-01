@@ -2,7 +2,7 @@
   <img src="images/CAF-AotW-banner.svg" width="100%" alt="CAF AotW banner">
 </p>
 
-# 09/29/2026 &mdash; AotW#15: matsim-agents &mdash; Agentic Atomistic Materials Discovery with Machine-Learned Interatomic Potentials
+# 10/01/2026 &mdash; AotW#15: matsim-agents &mdash; Agentic Atomistic Materials Discovery with Machine-Learned Interatomic Potentials
 
 ---
 
@@ -65,7 +65,7 @@ relaxation, active learning, composition and phase exploration, property-driven
 investigation, and multi-model scientific debate.
 
 Candidate structures are generated from the pymatgen AFLOW prototype encyclopedia
-and optional pyXtal random symmetry-aware sampling. Geometry relaxation supports
+and optional PyXtal random symmetry-aware sampling. Geometry relaxation supports
 HydraGNN, UMA through FairChem, and MACE-family models through a common MLIP-facing
 workflow. Relative phase ranking compares converged candidates within an exploration;
 convex-hull claims additionally require compatible elemental and competing-phase
